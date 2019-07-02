@@ -1,5 +1,9 @@
 # Ch1 K&R
 
+Compiling C code generally
+
+`gcc -o binary_name sourcefile.c`
+
 *statements* specify the computing operations to be done
 *variables* store values used during the computation
 
@@ -16,4 +20,14 @@ using. C provides several other basic data types including char, short,
 long, and double. There are also arrays, structures and unions of these 
 basic types, and pointers to them
 
+[Fahrenheit to Celsius](fahrtocelsius.c)
 
+It's bad practice to bury magic numbers into a program. Define some *symbolic constants*.
+
+```
+#define LOWER 0
+#define UPPER 300
+#define STEP  20
+```
+
+[Use constants and for loop](fahrtocelsiusforloop.c)
