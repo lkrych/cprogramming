@@ -1,45 +1,57 @@
 #include <stdio.h>
-#include <regex.h>
 // write a program to print a histogram of the frequencies of different characters in its input
-//  w/ help from https://stackoverflow.com/questions/1085083/regular-expressions-in-c-examples
 
 //helper functions
 void read_input(int alpha[]){
-    regex_t regex;
-    int input, i, reti;
-    char c;
-    char * regexString = "[:alpha]";
-    
-    /* Compile regular expression */
-    reti = regcomp(&regex, regexString, 0);
-    if (reti) {
-        fprintf(stderr, "Could not compile regex\n");
-        exit(1);
-    }
+    int c, arrIdx;
 
     // grab characters from input
-    while ((input = getchar()) != EOF) {
-        //see if character is alpha
-        c = input + '0';
-        reti = regexec(&regex, c, 0, NULL, 0);
-        if (!reti) {
-            puts("Match");
+    while ((c = getchar()) != '!' + 0) {
+        // see if character is alpha
+        if (c >= 65 && c <= 90) {
+            // uppercase
+            arrIdx = c%65;
+        } else if ( c >= 97 && c <= 122) {
+            // lowercase
+            arrIdx = c%97;
+        } else {
+            continue;
         }
-        else if (reti == REG_NOMATCH) {
-            puts("No match");
-        }
-        // printf("%d\n", c);
-        // printf("%d\n", c%97);
+        alpha[arrIdx] = alpha[arrIdx] + 1;
     }
 }
 
 void create_and_print_histogram(int counts[]){
-    printf("Nice histogram :) \n");
+    char * alpha = "abcdefghijklmnopqrstuvwxyz";
+    int i, j, count;
+    char c;
+    puts("<><><><><><><><><><><><><><><><><><><><><><><><><><><><>");
+    puts("<><> histogram of different characters used in input <><>");
+    puts("<><><><><><><><><><><><><><><><><><><><><><><><><><><><>");
+    for( i = 0; i < 26; i++) {
+        c = alpha[i];
+        count = counts[i];
+        if (count == 0) {
+            continue;
+        }
+        printf("%c:\t", c);
+        // one * is a count
+        for (j = 0; j < count; j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
 }
 
 int main(){
     //store counts of alphabet
+    int i;
     int ALPHA[26];
+    puts("type ! to create the histogram");
+    for (i = 0; i < 26; ++i){
+        ALPHA[i] = 0;
+    }
+
     read_input(ALPHA);
     create_and_print_histogram(ALPHA);
 }
