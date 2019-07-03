@@ -31,3 +31,12 @@ It's bad practice to bury magic numbers into a program. Define some *symbolic co
 ```
 
 [Use constants and for loop](fahrtocelsiusforloop.c)
+
+Arrays need to be initialized with starting values
+
+`
+    int ndigit[10];
+    for (i = 0; i < 10; ++i){
+        ndigit[i] = 0;
+    }
+`
