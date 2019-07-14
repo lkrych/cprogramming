@@ -28,6 +28,8 @@ int * slice_array( int *arr, int length_arr,  int start, int finish) {
         sliced[slice_i] = arr[i];
         slice_i += 1;
     }
+    printf("sliced array: ");
+    print_array(sliced, finish - start);
     return sliced;
 }
 
@@ -56,7 +58,34 @@ int * bubble_sort( int *arr, int length) {
 
 int * merge(int *arr1, int arr1_len, int *arr2, int arr2_len) {
     int merged[arr1_len + arr2_len];
-    int i,j = 0;
+    int i,j,k = 0;
+
+    while (i < arr1_len && j < arr2_len) {
+        if (arr1[i] <= arr2[j]) {
+            merged[k] = arr1[i];
+            i++;
+        } else {
+            merged[k] = arr2[j];
+            j++;
+        }
+        k++;
+    }
+
+    // copy the remaining elements of arr1 if there are any
+    while (i < arr1_len) {
+        merged[k] = arr1[i];
+        i++;
+        k++;
+    }
+
+    // copy the remaining elements of arr2 if there are any
+    while (j < arr2_len) {
+        merged[k] = arr2[j];
+        j++;
+        k++;
+    }
+
+    return merged;
     
 }
 
@@ -64,17 +93,24 @@ int * merge_sort( int *arr, int length) {
     if (length < 2) {
         return arr;
     }
+    printf("The array given to merge sort is: ");
+    print_array(arr, length);
     int mid = length / 2;
     int *leftArr = slice_array(arr, length, 0, mid);
-    int *rightArr = slice_array(arr, length, mid + 1, length - 1);
+    int *rightArr = slice_array(arr, length, mid, length);
 
-    int sizeLeft = sizeof(leftArr) / sizeof(int);
-    int sizeRight = sizeof(rightArr) / sizeof(int);
+    int sizeLeft = mid - 0;
+    int sizeRight = length - mid;
+
+    printf("The size of the left arr is %d \n", sizeLeft);
+    printf("The size of the right arr is %d \n", sizeRight);
+
+
     // make recursive call
     int *sortedLeft = merge_sort(leftArr, sizeLeft);
     int *sortedRight = merge_sort(rightArr, sizeRight);
 
-    int *merged = merge(*sortedLeft, sizeLeft, *sortedRight, sizeRight);
+    int *merged = merge(sortedLeft, sizeLeft, sortedRight, sizeRight);
 
     return merged;
 }
@@ -85,4 +121,11 @@ int main() {
     int * sorted = bubble_sort(sortThisArray, arrSize);
     printf("bubble_sort: ");
     print_array(sorted, arrSize);
+
+    int sortThisArrayWithMergeSort[] = {15, 13, 5, 2, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int arrSizeMerge = sizeof(sortThisArrayWithMergeSort)/sizeof(int);
+    int * sortedWithMergeSort = merge_sort(sortThisArrayWithMergeSort, arrSizeMerge);
+
+    printf("merge_sort: ");
+    print_array(sortedWithMergeSort, arrSizeMerge);
 }
