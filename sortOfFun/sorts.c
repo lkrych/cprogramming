@@ -56,63 +56,59 @@ int * bubble_sort( int *arr, int length) {
 
 // merge sort
 
-int * merge(int *arr1, int arr1_len, int *arr2, int arr2_len) {
-    int merged[arr1_len + arr2_len];
-    int i,j,k = 0;
+void merge(int arr[], int leftIndex, int midIndex, int rightIndex) {
+    int i,j,k;
+    int arr1Len = midIndex - leftIndex +1;
+    int arr2Len = rightIndex - midIndex;
 
-    while (i < arr1_len && j < arr2_len) {
+    int arr1[arr1Len], arr2[arr2Len];
+    //copy data to the temp arrays: arr1 and arr2
+    for (i = 0; i < arr1Len; i++) {
+        arr1[i] = arr[leftIndex + i];
+    }
+    for (j = 0; j < arr2Len; j++) {
+        arr2[j] = arr[midIndex + 1 + j];
+    }
+
+    i = 0;
+    j = 0;
+    k = leftIndex;
+
+    //start merging the arrays
+    while (i < arr1Len && j < arr2Len) {
         if (arr1[i] <= arr2[j]) {
-            merged[k] = arr1[i];
+            arr[k] = arr1[i];
             i++;
         } else {
-            merged[k] = arr2[j];
+            arr[k] = arr2[j];
             j++;
         }
         k++;
     }
 
     // copy the remaining elements of arr1 if there are any
-    while (i < arr1_len) {
-        merged[k] = arr1[i];
+    while (i < arr1Len) {
+        arr[k] = arr1[i];
         i++;
         k++;
     }
 
     // copy the remaining elements of arr2 if there are any
-    while (j < arr2_len) {
-        merged[k] = arr2[j];
+    while (j < arr2Len) {
+        arr[k] = arr2[j];
         j++;
         k++;
     }
-
-    return merged;
-    
 }
+// modifies the incoming array
+void merge_sort(int arr[], int leftIndex, int rightIndex) {
+    if (leftIndex < rightIndex) { //do some sorting
+        int midIndex = (leftIndex + (rightIndex)) / 2;
 
-int * merge_sort( int *arr, int length) {
-    if (length < 2) {
-        return arr;
+        merge_sort(arr, leftIndex, midIndex);
+        merge_sort(arr, midIndex + 1, rightIndex);
+        merge(arr, leftIndex, midIndex, rightIndex);
     }
-    printf("The array given to merge sort is: ");
-    print_array(arr, length);
-    int mid = length / 2;
-    int *leftArr = slice_array(arr, length, 0, mid);
-    int *rightArr = slice_array(arr, length, mid, length);
-
-    int sizeLeft = mid - 0;
-    int sizeRight = length - mid;
-
-    printf("The size of the left arr is %d \n", sizeLeft);
-    printf("The size of the right arr is %d \n", sizeRight);
-
-
-    // make recursive call
-    int *sortedLeft = merge_sort(leftArr, sizeLeft);
-    int *sortedRight = merge_sort(rightArr, sizeRight);
-
-    int *merged = merge(sortedLeft, sizeLeft, sortedRight, sizeRight);
-
-    return merged;
 }
 
 int main() {
@@ -122,10 +118,11 @@ int main() {
     printf("bubble_sort: ");
     print_array(sorted, arrSize);
 
-    int sortThisArrayWithMergeSort[] = {15, 13, 5, 2, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int sortThisArrayWithMergeSort[] = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     int arrSizeMerge = sizeof(sortThisArrayWithMergeSort)/sizeof(int);
-    int * sortedWithMergeSort = merge_sort(sortThisArrayWithMergeSort, arrSizeMerge);
+    printf("The length of the array we are passing into merge sort is: %d \n", arrSizeMerge - 1);
+    merge_sort(sortThisArrayWithMergeSort, 0, arrSizeMerge - 1);
 
     printf("merge_sort: ");
-    print_array(sortedWithMergeSort, arrSizeMerge);
+    print_array(sortThisArrayWithMergeSort, arrSizeMerge);
 }
