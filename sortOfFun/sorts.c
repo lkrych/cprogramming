@@ -101,6 +101,7 @@ void merge(int arr[], int leftIndex, int midIndex, int rightIndex) {
     }
 }
 // modifies the incoming array
+// https://www.geeksforgeeks.org/c-program-for-merge-sort/
 void merge_sort(int arr[], int leftIndex, int rightIndex) {
     if (leftIndex < rightIndex) { //do some sorting
         int midIndex = (leftIndex + (rightIndex)) / 2;
