@@ -2,16 +2,20 @@
 #include <stdlib.h> // For exit()
 #include <string.h> // to split each line 
 
-#define MAX_WORD_LENGTH 30 //arbitrary
+#define MAX_WORD_LENGTH 60 //arbitrary
+
+// strings in c are character arrays
+// line 16: allocate space for largest possible word
+// line 17: allocate space for each line read from file
+// line 28: use fgets to read from file pointer into line
+// line 30: use strtok to split each line by spaces
+// line 34: copy current word into longest word
 
 void longest_word(char file_name[]) {
   FILE *fptr;
   char *longest_word = (char*) malloc (MAX_WORD_LENGTH);
   char line[255];
   int largest_len = 0;
-
-  //init longest_word
-  longest_word = "";
 
   // open file
   fptr = fopen(file_name, "r");
@@ -25,6 +29,7 @@ void longest_word(char file_name[]) {
     //split line by word
       char *temp = strtok(line, " ");
       while (temp != NULL) {
+        printf("%s, length: %lu\n", temp, strlen(temp));
         if (strlen(temp) > largest_len) {
           strcpy(longest_word, temp);
           largest_len = strlen(longest_word);
@@ -35,7 +40,8 @@ void longest_word(char file_name[]) {
 
   printf("The largest word in the file is: %s\n", longest_word);
 
-  //close file pointer
+  //close file pointer and free malloc'd space
+  free(longest_word);
   fclose(fptr);
 
 }
