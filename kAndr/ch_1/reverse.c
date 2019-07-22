@@ -1,32 +1,33 @@
 #include <stdio.h>
 #include <string.h>
 
-void print_string(char *reversed, int length) {
+void print_string(char *string, int length) {
     int i;
     printf("string output: ");
-    for (i = 0; i < length; i++) {
-        printf("%s", reversed[i]);
+    for (i = 0; i <= length; i++) {
+        printf("%c", string[i]);
     }
     printf("\n");
 }
 
-char * reverse(char *s, int length) {
-    char reversed[length]; //will hold reversed string
+void reverse(char *s, char *reverse, int length) {
     int i; // start at last character
     int j = 0; // reversed string index
 
     for (i = length; i >= 0; i--) {
-        reversed[j] = s[i];
+        reverse[j] = s[i];
         j++;
     }
-    return reversed;
 }
 
 
 int main() {
     int length;
     char *s = "hello world";
-    length = strlen(s);
-    char *reversed = reverse(s, length);
-    print_string(reversed, length);
+
+    length = strlen(s) - 1;
+    char r[length];
+
+    reverse(s, r, length);
+    print_string(r, length);
 }
