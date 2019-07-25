@@ -8,9 +8,9 @@ int fibonacci(int n) {
     return fibonacci(n-1) + fibonacci(n-2);
 }
 // time for fibonacci_dynamic of 41: 0m0.005s
-// time for fibonacci_dynamic of 1000: 0m0.005s there is definitely overflow the answers are not the same
-long fibonacci_dynamic(n) {
-    long current, new_current, prev_val; 
+// time for fibonacci_dynamic of 1000: 0m0.003s
+long double fibonacci_dynamic(n) {
+    long double current, new_current, prev_val; 
     int i;
     current = 1;
     prev_val = 0;
@@ -26,7 +26,7 @@ long fibonacci_dynamic(n) {
 
 int main() {
     int n = 1000;
-    long ans;
+    long double ans;
     ans = fibonacci_dynamic(n);
-    printf("Fibonacci of %d is %ld \n", n, ans);
+    printf("Fibonacci of %d is %Lf \n", n, ans);
 }
