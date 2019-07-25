@@ -12,8 +12,8 @@ void print_string(char *string, int length) {
 //raise x ^ n
 int mypow(int x, int n) {
     int i = 0;
-    int total = 0;
-    while (i <= n){
+    int total = 1;
+    while (i < n){
         total = total * x;
         i++;
     }
@@ -65,7 +65,7 @@ int htoi(char *hex, int len) {
     int power, int_val, i;
     power = 0;
     int_val = 0;
-    i = len;
+    i = len - 1;
     while (i >= 0) {
         int_val = ((mypow(16, power) * hex_val(hex[i])) + int_val);
         i--;
@@ -79,9 +79,9 @@ int main() {
     char *convert1 = "f";
     char *convert2 = "13";
     char *convert3 = "a156";
-    int len1 = sizeof(convert1)/sizeof(convert1[0]);
-    int len2 = sizeof(convert2)/sizeof(convert2[0]);
-    int len3 = sizeof(convert3)/sizeof(convert3[0]);
+    int len1 = strlen(convert1);
+    int len2 = strlen(convert2);
+    int len3 = strlen(convert3);
 
     ans1 = htoi(convert1, len1);
     printf("hex: ");
