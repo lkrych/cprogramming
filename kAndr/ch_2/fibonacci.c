@@ -9,8 +9,9 @@ int fibonacci(int n) {
 }
 // time for fibonacci_dynamic of 41: 0m0.005s
 // time for fibonacci_dynamic of 1000: 0m0.005s there is definitely overflow the answers are not the same
-int fibonacci_dynamic(n) {
-    int current, new_current, prev_val, i;
+long fibonacci_dynamic(n) {
+    long current, new_current, prev_val; 
+    int i;
     current = 1;
     prev_val = 0;
     i = 0;
