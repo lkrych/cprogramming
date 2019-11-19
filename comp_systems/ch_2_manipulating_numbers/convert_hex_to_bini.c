@@ -52,7 +52,7 @@ char charVal(int num)
     }
 }
 
-char strev(char *str) {
+void strev(char *str) {
     int len = strlen(str);
     int i;
     for (i = 0; i < len/2; i++) 
@@ -83,7 +83,6 @@ int main(int argc, char *argv[]) {
         printf("usage: convert_hex_to_bini F7\n");
     }
     char binres[100];
-
     int x = hextoi(argv[1]);
     itox(x, 2, binres);
 
