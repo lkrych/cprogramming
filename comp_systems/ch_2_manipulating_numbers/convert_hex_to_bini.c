@@ -3,45 +3,53 @@
 #include <string.h>
 
 int getVal(char c) {
-    int intVal = (int) c;
-    if (intVal >= 0 && intVal <= 9) {
-        return intVal;
-    } else {
-        switch (c) {
-            case 'A':
-                return 10;
-            case 'B':
-                return 11;
-            case 'C':
-                return 12;
-            case 'D':
-                return 13;
-            case 'E':
-                return 14;
-            case 'F':
-                return 15;
-        }
+    int intVal = 0;
+    switch (c) {
+        case 'A':
+            return 10;
+        case 'B':
+            return 11;
+        case 'C':
+            return 12;
+        case 'D':
+            return 13;
+        case 'E':
+            return 14;
+        case 'F':
+            return 15;
+        default:
+            intVal = atoi(&c);
+            return intVal;
     }
 }
 
 int powerup(base, exp) {
-    int counter = base;
+    int counter = 1;
     while (exp > 0) {
         counter *= base;
         exp -= 1;
     }
     return counter;
-}
+} 
 
 int hextoi(char *hex) {
     int i;
     int counter = 0;
-    int power = strlen(hex) -1;
-    for (i = 0; i < strlen(hex); i++){
+    int power = 0;
+    for (i = strlen(hex) - 1; i >= 0; i--) {
         counter += getVal(hex[i]) * powerup(16, power);
-        power -= 1;
+        power++;
     }
     return counter;
+}
+
+char charVal(int num)
+{
+    if (num >= 0 && num <= 9) {
+        return (char)(num + '0');
+    } else {
+        return (char)(num - 10) + 'A';
+    }
 }
 
 char strev(char *str) {
@@ -56,18 +64,18 @@ char strev(char *str) {
 }
 
 
-// char* itox(int x, int base, char res[])  {
-//     int index = 0;
+char* itox(int x, int base, char res[])  {
+    int index = 0;
 
-//     while (x > 0) {
-//         int next_digit = x % base;
-//         res[index++] = charVal(next_digit);
-//         x /= base;
-//     }
-//     res[index] = '\0'; //how c closes strings
-//     strev(res);
-//     return res;
-// }
+    while (x > 0) {
+        int next_digit = x % base;
+        res[index++] = charVal(next_digit);
+        x /= base;
+    }
+    res[index] = '\0'; //how c closes strings
+    strev(res);
+    return res;
+}
 
 // gcc -o convert_hex_to_bini convert_hex_to_bini.c
 int main(int argc, char *argv[]) {
@@ -77,8 +85,7 @@ int main(int argc, char *argv[]) {
     char binres[100];
 
     int x = hextoi(argv[1]);
-    printf("X: %d", x);
-    // itox(x, 2, binres);
+    itox(x, 2, binres);
 
     printf("dec: %d, bin: %s, hex: 0x%s \n", x, binres, argv[1]);
 }
