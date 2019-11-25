@@ -10,5 +10,5 @@ int main() {
     int x = 0x87654321;
     printf("least significant byte of x: 0x%x\n", x & 0xFF);
     printf("all but least significant byte of x complemented, with least significant byte unchanged: 0x%x\n", (~x) ^ 0xFF);
-    printf("least significant byte set to all 1s: 0x%x,\n ", x ^ 0xFF);
+    printf("least significant byte set to all 1s: 0x%x,\n ", x | 0xFF);
 }
