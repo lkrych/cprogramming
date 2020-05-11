@@ -101,3 +101,51 @@ struct test_struct* search_in_list(int val, struct test_struct **prev)
     }
     
 }
+
+int delete_from_list(int val)
+{
+    struct test_struct *prev = NULL;
+    struct test_struct *del = NULL;
+
+    printf("\n Deleting value [%d] from list\n", val);
+
+    del = search_in_list(val, &prev);
+    if(del == NULL)
+    {
+        return -1;
+    }
+    else 
+    {
+        if(prev != NULL)
+        {
+            prev->next = del->next;
+        }
+
+        if(del == curr)
+        {
+            curr = prev;
+        }
+        else if(del == head)
+        {
+            head = del->next;
+        }
+    }
+    free(del);
+    del = NULL;
+
+    return 0;
+}
+
+void print_list(void)
+{
+    struct test_struct *ptr = head;
+
+    printf("\n -------Printing list Start ---------\n");
+    while(ptr != NULL)
+    {
+        printf("\n [%d] \n", ptr->val);
+        ptr = ptr->next;
+    }
+    printf("\n -------Printing list End ---------\n");
+    return;
+}
