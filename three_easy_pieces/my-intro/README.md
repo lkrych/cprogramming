@@ -30,3 +30,13 @@ The reason for these odd and unusual outcomes **relate to how instructions are e
 3. One to store it back into memory.
 
 Because these instructions do not execute **atomically** (all at once), strange things can happen. 
+
+### Thinking about Persistence
+
+In system memory, data can be easily lost, as devices such as DRAM store values in a volatile manner (when power goes away or the system crashes, any data in memory is lost).
+
+Thus, we need hardware and software to be able to store data **persistently**. 
+
+The hardware comes in the form of some kind of **input/output (I/O) device**. The software in the operating system that usually manages the disk is called the **file system**.
+
+Unlike the abstractions provided by the OS for the CPU and memory (processes and address space/virtual memory), the OS does not create a private, virtualized disk for each application. Rather it is assumed that users will want to share information that is in files. 
