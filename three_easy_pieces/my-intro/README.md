@@ -27,6 +27,6 @@ The reason for these odd and unusual outcomes **relate to how instructions are e
 
 1. One to load the value of the counter from memory into register.
 2. One to increment it.
-3. One to stor it back into memory.
+3. One to store it back into memory.
 
 Because these instructions do not execute **atomically** (all at once), strange things can happen. 
