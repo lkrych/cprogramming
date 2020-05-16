@@ -1,3 +1,10 @@
+# Introduction to OS
+
+## Table of Contents
+* [Thinking about concurrency](#thinking-about-concurrency)
+* [Thinking about persistence](#thinking-about-persistence)
+* [Design goals](#design-goals-of-an-operating-system)
+
 ### Thinking about concurrency
 
 Let's look at the code in threads.c
@@ -39,4 +46,28 @@ Thus, we need hardware and software to be able to store data **persistently**.
 
 The hardware comes in the form of some kind of **input/output (I/O) device**. The software in the operating system that usually manages the disk is called the **file system**.
 
-Unlike the abstractions provided by the OS for the CPU and memory (processes and address space/virtual memory), the OS does not create a private, virtualized disk for each application. Rather it is assumed that users will want to share information that is in files. 
+Unlike the abstractions provided by the OS for the CPU and memory (processes and address space/virtual memory), the OS does not create a private, virtualized disk for each application. Rather it is assumed that users will want to *share* information that is in files. 
+
+The code in `io.c` creates a file that contains the string "hello world".
+
+To accomplish this task, the program makes three calls into the operating system:
+    1. **open** - which opens the file and creates it
+    2. **write** -  which writes the data to the file
+    3. **close** - which closes the file, indicating the program won't be writing any more data to it. 
+
+These calls are **system calls** which are part of the API the operating system exposes to programmers.
+
+For performance reasons, most file systems first delay writes for a while, hoping to batch them into larger groups. To handle the problems of system crashes during writes, most file systems incorporate some kind of intricate write protocol, such as journaling, or copy-on-write, which carefully orders writes to disk to ensure that if a failure occurs during the write sequence, the system can recover afterwards. 
+
+### Design Goals of an Operating System
+
+The three easy pieces of operating systems are:
+1. It takes physical resources, such as CPU, memory, or disk, and **virtualizes** them.
+2. It handles tough and tricky issues related to **concurrency**.
+3. It stores files **persistently**, making them safe over the long term. 
+
+One of the most basic goals is to build up some **abstractions** in order to make the system convenient and easy to use.
+
+Another sometimes conflicting goal is to provide **high performance**, minimizing the overhead of the OS.  We'll seek solutions that improve usability, but not at any cost. 
+
+Another goal is **protection** between applications because we wish to allow many programs to run at the same time. 
