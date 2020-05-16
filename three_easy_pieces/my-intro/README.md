@@ -4,6 +4,7 @@
 * [Thinking about concurrency](#thinking-about-concurrency)
 * [Thinking about persistence](#thinking-about-persistence)
 * [Design goals](#design-goals-of-an-operating-system)
+* [History](#a-brief-history-lesson)
 
 ### Thinking about concurrency
 
@@ -71,3 +72,19 @@ One of the most basic goals is to build up some **abstractions** in order to mak
 Another sometimes conflicting goal is to provide **high performance**, minimizing the overhead of the OS.  We'll seek solutions that improve usability, but not at any cost. 
 
 Another goal is **protection** between applications because we wish to allow many programs to run at the same time. 
+
+The OS must also run non-stop, when it fails, all application fails. For this reason, the OS must provide a high degree of **reliability**. 
+
+Some additional design goals are **energy-efficiency**, **security**, and **mobility** (ability to run on smaller devices).
+
+### A brief history lesson
+
+When computers were first invented the OS was a set of libraries of commonly-used functions. This was fine for batch computing, but soon people realized that running programs needed isolation. 
+
+**System calls** were invented to solve this problem. Instead of providing OS routines as a library, the idea was to add a special pair of hardware instructions and state to make the transition into the OS a more formal, controlled process.
+
+The key difference between a system call and a procedure call is that a system call transfers control into the OS while simultaneously raising the **hardware privilege** level. User applications run in what is referred to as **user mode**, which means the hardware restricts what applications can do. 
+
+When a system call is initiated (usually through a **special hardware instruction** called a **trap**), the hardware transfers control to a pre-specified trap handler and raises the privilege level to **kernel mode**. In kernel mode, the OS has full access to the hardware of the system. When the OS is done servicing the request, it passes control back to the user via a special return-from-trap instruction.
+
+
