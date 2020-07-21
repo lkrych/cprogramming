@@ -86,4 +86,31 @@ The variables num and pi are located at address 100 and 104. Both are assumed to
 
 ## Reading a declaration
 
+The trick to reading pointer declaration is to read them backwards. Take the following declaration:
 
+```c
+const int *pci;
+```
+
+<img src="1_resources/reading_a_pointer.png">
+
+## Address of Operator
+
+The address of operator, `&`, will return its operand's address. We can initialize the pi pointer with the address of num using this operator as follows:
+
+```c
+int num = 0;
+int *pi = &num;
+```
+
+<img src="1_resources/address_of_pi.png">
+
+It is **good practice to initialize a pointer as soon as possible**.
+
+```c
+int num;
+int *pi;
+pi = &num;
+```
+
+## Displaying Pointer Values
