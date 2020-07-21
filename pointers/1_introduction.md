@@ -114,3 +114,46 @@ pi = &num;
 ```
 
 ## Displaying Pointer Values
+
+Rarely will the values we use actually have nice clean addresses like 100 and 104. The address can be determined by printing it out.
+
+```c
+int num = 0;
+int *pi = &num;
+
+printf("Address of num: %d, Value: %d\n", &num, num);
+printf("Address of pi: %d, Value: %d\n", &pi, pi);
+```
+
+Running the following code returns:
+
+```bash
+$ gcc -o display_p display_pointer.c
+$ ./display_p                                                                    
+Address of num: -310567156, Value: 0
+Address of pi: -310567168, Value: -310567156
+```
+
+<img src="1_resources/printf_field_spec.png>
+
+The %p specifier differs from %x in that it typically displays the hexadecimal number in uppercase. We will use %p for addresses unless otherwise specified.
+
+## Virtual Memory and Pointers
+
+To further complicate displaying addresses, the pointer addresses returned are not likely to be real physical memory addresses. Each program assumes is has access to the entire machine's physical memory space. In reality, it doesn't. **The address used by a program is a virtual address**. The OS maps the virtual address to a real physical memory address when needed.
+
+## Dereferencing a Pointer using the Indirection Operator (*)
+
+The **indirection operator**, `*`, **returns the value pointed to by a pointer valuable**. This is frequently referred to as **dereferencing** a pointer. 
+
+```c
+int num = 5;
+int *pi = &num;
+printf("%p\n", *pi); //displays 5
+*pi = 200;
+printf("%d\n", num); //displays 200
+```
+
+<img src="1_resources/dereference_pi.png">
+
+We can use the result of the dereference operator as an **lvalue**. The term lvalue refers to the operand found on the left side of the assignment operator. All lvalues are modifiable since they are being assigned a value.
