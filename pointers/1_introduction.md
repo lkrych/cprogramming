@@ -7,6 +7,11 @@
 * [C behaviors](#c-behaviors)
 * [Pointer Declaration](#pointer-declaration)
     * [Reading a declaration](#reading-a-declaration)
+* [Address of Operator: &](#address-of-operator)
+* [Displaying Pointer Values](#displaying-pointer-values)
+* [Dereferencing a Pointer using the Indirection Operator: *](#dereferencing-a-pointer-using-the-indirection-operator)
+* [The concept of NULL](#the-concept-of-null)
+* [Pointer to void](#pointer-to-void)
 
 ## Introduction
 
@@ -157,3 +162,46 @@ printf("%d\n", num); //displays 200
 <img src="1_resources/dereference_pi.png">
 
 We can use the result of the dereference operator as an **lvalue**. The term lvalue refers to the operand found on the left side of the assignment operator. All lvalues are modifiable since they are being assigned a value.
+
+## The Concept of Null
+
+The concept of null is often misunderstood. Why? Because all the following are distinct:
+* The null concept
+* The null pointer constant
+* The NULL macro
+* The ASCII NUL
+* A null string
+* The null statement
+
+Yikes!
+
+When **NULL is assigned to a pointer**, it means the **pointer does not point to anything**. 
+
+The NULL macro is a constant integer zero cast to a pointer to void.
+
+```c
+ #define NULL    ((void *)0)
+```
+
+The ASCII NUL is defined as a byte containing all zeros. However, this is not the same as a null pointer. A string in C is represented as a sequence of characters terminated by a zero value. The null string is an empty string and does not contain any characters. Finally, the null statement consists of a statement with a single semicolon.
+
+The null pointer is a very useful feature for many data structure implementations, such as a linked list where it is often used to mark the end of the list.
+
+**A null pointer and an uninitialized pointer are different**. An uninitialized pointer can contain any value, whereas a pointer containing NULL does not reference any location in memory.
+
+*Which is better form, using NULL or 0 when working with pointers?* Either is acceptable, but some developers prefer to use NULL because it is a reminder that we are working with pointers.
+
+## Pointer to void
+
+A **pointer to void** is a general-purpose pointer **used to hold references to any data type**.
+
+Any pointer can be assigned to a pointer to void. It can then be cast back to its original pointer type. When this happens the value will be equal to the original pointer value. 
+
+```c
+int num;
+int *pi = &num;
+printf("Value of pi: %p\n", pi); 
+void* pv = pi; // assigned to pointer to void
+pi = (int*) pv; // assigned back to a pointer to an int
+printf("Value of pi: %p\n", pi);
+```
