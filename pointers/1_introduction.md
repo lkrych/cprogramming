@@ -3,16 +3,17 @@
 ## Table of Contents
 
 * [Introduction](#introduction)
-* [C and Memory](#c-and-memory)
-* [C behaviors](#c-behaviors)
-* [Pointer Declaration](#pointer-declaration)
-    * [Reading a declaration](#reading-a-declaration)
-* [Address of Operator: &](#address-of-operator)
-* [Displaying Pointer Values](#displaying-pointer-values)
-* [Dereferencing a Pointer using the Indirection Operator: *](#dereferencing-a-pointer-using-the-indirection-operator)
-* [The concept of NULL](#the-concept-of-null)
-* [Pointer to void](#pointer-to-void)
-
+* [Pointers and Memory](#c-and-memory)
+    * [C and Memory](#c-and-memory)
+    * [C behaviors](#c-behaviors)
+    * [Pointer Declaration](#pointer-declaration)
+        * [Reading a declaration](#reading-a-declaration)
+    * [Address of Operator: &](#address-of-operator)
+    * [Displaying Pointer Values](#displaying-pointer-values)
+    * [Dereferencing a Pointer using the Indirection Operator: *](#dereferencing-a-pointer-using-the-indirection-operator)
+    * [The concept of NULL](#the-concept-of-null)
+    * [Pointer to void](#pointer-to-void)
+* [Pointer Size and Types](#)
 ## Introduction
 
 Please remember this one thing:
@@ -205,3 +206,62 @@ void* pv = pi; // assigned to pointer to void
 pi = (int*) pv; // assigned back to a pointer to an int
 printf("Value of pi: %p\n", pi);
 ```
+## global and static pointers
+
+If a pointer is declared as [global or static](#c-and-memory), it is initialized to NULL when the program starts. 
+
+```c
+int *globalpi;
+
+void foo() {
+    static int *staticpi;
+}
+
+int main() {
+    foo();
+}
+
+```
+
+<img src="1_resources/global_static_memory_pi.png">
+
+Static and global variables are frequently placed in a data segment separate from the data segments used by the heap and the stack.
+
+## Pointer Size and Types
+
+Pointer size is an issue when we are thinking about application compatibility and portability. On most modern platforms, the size of a pointer to data is the same regardless of pointer type. The one gotcha is that the size of a pointer to a function may be different from the size of a pointer to data.
+
+## Memory Models
+
+The introduction of 64-bit machines has made more apparent the differences in size of memory allocated for data types. I, L, and P refer to an integer, long and pointer respectively.
+
+<img src="1_resources/memory_models.png">
+
+The model used depends on the OS and the compiler. More than one model may be supported by the same OS.
+
+## Pre-defined pointer-related types
+
+Four predefined types are frequently used when working with pointers.
+
+1. `size_t` - Created to provide a safe type for sizes. 
+2. `ptrdiff_t` - Created to handle pointer arithmetic
+3. `intptr_t\uintptr_t` -  Used for storing pointer addresses.
+
+Let's look at `size_t`. This type represents the maximum size any object can be in C. It is an unsigned integer. Its **purpose is to provide a portable means of declaring a size consistent with the addressable area of memory available in the system**.
+
+`size_t` is used as the return type for the `sizeof()` operator and as the argument to many functions, including `malloc` and `strlen`.
+
+It is good practice to use `size_t` when **declaring variables for sizes such as the number of characters and array indexes**. It should be used for loop counters, indexing into arrays and sometimes for pointer arithmetic.
+
+The declaration of `size_t` is implementation-specific. It is found in one or more standard headers (stdio.h, stdlib.h) and is typically defined as follows:
+
+```c
+#ifndef __SIZE_T
+#define __SIZE_T
+typedef unsigned int size_t; #endif
+#endif
+```
+
+The define directive ensures it is only defined once. The actual size will depend on the implementation (32-bit system or 64-bit system)
+
+Be careful when printing values defined as `size_t`, they are unsigned values and if you choose the wrong format specifier, you will get unreliable results. The recommended specifier is `%zu`.
