@@ -6,7 +6,7 @@
 * [Pointers and Memory](#c-and-memory)
     * [C and Memory](#c-and-memory)
     * [C behaviors](#c-behaviors)
-    * [Pointer Declaration](#pointer-declaration)
+    * [Pointer Declaration](#declaring-a-pointer)
         * [Reading a declaration](#reading-a-declaration)
     * [Address of Operator: &](#address-of-operator)
     * [Displaying Pointer Values](#displaying-pointer-values)
@@ -26,7 +26,7 @@ Most **pointers are used to manipulate data in memory**. A pointer variable cont
 
 A pointer is normally declared to be of a specific type depending on what it points to, however **there is nothing inherent in a pointer that indicates what type of data the pointer is referencing**. A pointer only contains an address
 
-## C and Memory
+### C and Memory
 
 When a C program is compiled, it works with three types of memory:
 
@@ -46,13 +46,13 @@ Many data structures are easily implemented using pointers.
 
 With a linked list, pointer are easier to use and map directly to a previous link. An array implementation requires array indexes that are not as intuitive or flexible as pointers. 
 
-## C Behaviors
+### C Behaviors
 
 1. **Implementation Defined** - Some specific, documented implementation is provided.
 2. **Unspecified** - Some implementation is provided but it is not documented.
 3. **Undefined** - There are no requirements imposed and anything can happen. An example of undefined behavior is the value of a pointer deallocated by the free functions.
 
-## Declaring Pointers
+### Declaring Pointers
 
 Pointer variables are declared using a data type followed by an asterisk and then the pointer's variable's name.
 
@@ -90,7 +90,7 @@ The variables num and pi are located at address 100 and 104. Both are assumed to
 * The content of pi should be assigned the address of an integer variable.
 * These variables have no been initialized and thus contain meaningless data.
 
-## Reading a declaration
+### Reading a declaration
 
 The trick to reading pointer declaration is to read them backwards. Take the following declaration:
 
@@ -100,7 +100,7 @@ const int *pci;
 
 <img src="1_resources/reading_a_pointer.png">
 
-## Address of Operator
+### Address of Operator
 
 The address of operator, `&`, will return its operand's address. We can initialize the pi pointer with the address of num using this operator as follows:
 
@@ -119,7 +119,7 @@ int *pi;
 pi = &num;
 ```
 
-## Displaying Pointer Values
+### Displaying Pointer Values
 
 Rarely will the values we use actually have nice clean addresses like 100 and 104. The address can be determined by printing it out.
 
@@ -144,11 +144,11 @@ Address of pi: -310567168, Value: -310567156
 
 The %p specifier differs from %x in that it typically displays the hexadecimal number in uppercase. We will use %p for addresses unless otherwise specified.
 
-## Virtual Memory and Pointers
+### Virtual Memory and Pointers
 
 To further complicate displaying addresses, the pointer addresses returned are not likely to be real physical memory addresses. Each program assumes is has access to the entire machine's physical memory space. In reality, it doesn't. **The address used by a program is a virtual address**. The OS maps the virtual address to a real physical memory address when needed.
 
-## Dereferencing a Pointer using the Indirection Operator (*)
+### Dereferencing a Pointer using the Indirection Operator (*)
 
 The **indirection operator**, `*`, **returns the value pointed to by a pointer valuable**. This is frequently referred to as **dereferencing** a pointer. 
 
@@ -164,7 +164,7 @@ printf("%d\n", num); //displays 200
 
 We can use the result of the dereference operator as an **lvalue**. The term lvalue refers to the operand found on the left side of the assignment operator. All lvalues are modifiable since they are being assigned a value.
 
-## The Concept of Null
+### The Concept of Null
 
 The concept of null is often misunderstood. Why? Because all the following are distinct:
 * The null concept
@@ -192,7 +192,7 @@ The null pointer is a very useful feature for many data structure implementation
 
 *Which is better form, using NULL or 0 when working with pointers?* Either is acceptable, but some developers prefer to use NULL because it is a reminder that we are working with pointers.
 
-## Pointer to void
+### Pointer to void
 
 A **pointer to void** is a general-purpose pointer **used to hold references to any data type**.
 
@@ -206,7 +206,7 @@ void* pv = pi; // assigned to pointer to void
 pi = (int*) pv; // assigned back to a pointer to an int
 printf("Value of pi: %p\n", pi);
 ```
-## global and static pointers
+### global and static pointers
 
 If a pointer is declared as [global or static](#c-and-memory), it is initialized to NULL when the program starts. 
 
@@ -231,7 +231,7 @@ Static and global variables are frequently placed in a data segment separate fro
 
 Pointer size is an issue when we are thinking about application compatibility and portability. On most modern platforms, the size of a pointer to data is the same regardless of pointer type. The one gotcha is that the size of a pointer to a function may be different from the size of a pointer to data.
 
-## Memory Models
+### Memory Models
 
 The introduction of 64-bit machines has made more apparent the differences in size of memory allocated for data types. I, L, and P refer to an integer, long and pointer respectively.
 
@@ -239,7 +239,7 @@ The introduction of 64-bit machines has made more apparent the differences in si
 
 The model used depends on the OS and the compiler. More than one model may be supported by the same OS.
 
-## Pre-defined pointer-related types
+### Pre-defined pointer-related types
 
 Four predefined types are frequently used when working with pointers.
 
@@ -265,3 +265,76 @@ typedef unsigned int size_t; #endif
 The define directive ensures it is only defined once. The actual size will depend on the implementation (32-bit system or 64-bit system)
 
 Be careful when printing values defined as `size_t`, they are unsigned values and if you choose the wrong format specifier, you will get unreliable results. The recommended specifier is `%zu`.
+
+### Using sizeof with pointers
+
+The `sizeof` operator can be used to determine the size of a pointer.
+
+```c
+printf("Size of *char: %d\n", sizeof(char*));
+```
+
+The **size of a function pointer can vary**. Usually it is consistent for a given OS and compiler combination. 
+
+### Using intptr_t and uintptr_t
+
+The types `intptr_t` and `uintptr_t` are **used for storing pointer addresses**. They provide a **portable and safe way of declaring pointers**, and will be the same size as the underlying pointer used on the system. They are useful for converting pointers to their integer representation.
+
+For most operations, `intptr_t` is preferred, `uintptr_t` is the unsigned version of `intptr_t`.
+
+## Pointer Operators
+
+<img src="1_resources/pointer_operators.png">
+
+### Pointer Arithmetic
+
+Several arithmetic operations are performed on pointers to data. These include adding an integer to a pointer, subtracting an integer from a pointer, subtracting two pointers from each other, and comparing pointers.
+
+### Adding an integer to a pointer
+
+This operation is very common and useful. When we add an integer to a pointer, **the amount added is the product of the integer times the number of bytes underlying the data type**.
+
+The size of primitive types can [vary from system to system](#memory-models). However, here are the common sizes.
+
+<img src="p1_resources/data_type_sizes.png">
+
+```c
+int vector[] = {28, 41, 7};
+int *pi = vector;       // pi: 100
+
+printf("%d\n", *pi);    // Displays: 28
+pi += 1;                // pi: 104
+printf("%d\n", *pi);    // Displays: 41
+pi += 1;                // pi: 108
+printf("%d\n", *pi);    // Displays: 7
+```
+
+When an array name is used by itself, it returns the address of an array, which is also the address of the first element. 
+
+Let's look at something funky
+
+```c
+pi = vector;
+pi += 3;
+```
+
+<img src="1_resources/pointer_add_pi.png">
+
+The pointer is not pointing at itself. This is not useful, but illustrates the need to be careful when using pointer arithmetic! Accessing memory past the end of an array is dangerous and should be avoided. There is no guarantee that the memory access will be a valid variable.
+
+### Subtracting an integer from a pointer
+
+Integer values can be subtracted from a pointer in the same way that they are added. The **size of the data type times the integer increment value is subtracted from the address**. 
+
+```c
+int vector[] = {28, 41, 7};
+int *pi = vector + 2;       // pi: 108
+
+printf("%d\n", *pi);        // Displays: 7
+pi--;                       // pi: 104
+printf("%d\n", *pi);        // Displays: 41
+pi--1;                      // pi: 100
+printf("%d\n", *pi);        // Displays: 28
+```
+
+### Subtracting two pointers
