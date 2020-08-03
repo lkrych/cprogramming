@@ -338,3 +338,121 @@ printf("%d\n", *pi);        // Displays: 28
 ```
 
 ### Subtracting two pointers
+
+When one pointer is subtracted from another, we get the difference between their addresses (which is not usually useful except for determining the order of elements in the array).
+
+```c
+int vector[] = {28, 41, 7};
+int *p0 = vector;
+int *p1 = vector + 1;
+int *p2 = vector + 2;
+
+printf("p2-p0: %d\n",p2-p0); // p2-p0: 2 
+printf("p2-p1: %d\n",p2-p1); // p2-p1: 1
+printf("p0-p1: %d\n",p0-p1); // p0-p1: -1
+```
+
+The type `ptrdiff_t` is a portable way to express the difference between two pointers.
+
+### Comparing Pointers
+
+Pointers can be compared using the standard comparison operators. Usually this isn't very useful, however when comparing pointers to elements of an array, the comparison's results acn be used to determine the relative ordering of the array's elements.
+
+```c
+int vector[] = {28, 41, 7};
+int *p0 = vector;
+int *p1 = vector + 1;
+int *p2 = vector + 2;
+
+printf("p2>p0: %d\n",p2>p0); //p2>p0: 1
+printf("p2<p0: %d\n",p2<p0); //p2<p0: 0
+printf("p0>p1: %d\n",p0>p1); //p0>p1: 0
+```
+
+## Common Uses of Pointers
+
+### Multiple levels of indirection
+
+Pointers can be use different levels of indirection. It is not uncommon to see a variable declared as a **pointer to a pointers**, sometimes called a **double pointer**. 
+
+Let's look at an example. The first array is an array of strings used to hold a list of book titles:
+
+```c
+char *titles[] = {"A Tale of Two Cities", "Wuthering Heights","Don Quixote", "Odyssey","Moby-Dick","Hamlet", "Gulliver's Travels"};
+```
+
+Two additional arrays are provided whose purpose is to maintain a list of the "best books" and English books. Instead of holding copies of the titles, they will hold the address of a title in the titles array.
+
+```c
+char **bestBooks[3];
+char **englishBooks[4];
+
+bestBooks[0] = &titles[0];
+bestBooks[1] = &titles[3];
+bestBooks[2] = &titles[5];
+
+englishBooks[0] = &titles[0];
+englishBooks[1] = &titles[1];
+englishBooks[2] = &titles[5];
+englishBooks[3] = &titles[6];
+
+printf("%s\n",*englishBooks[1]); // Wuthering Heights
+```
+
+<img src="1_resources/pointers_to_pointers.png">
+
+Using multiple levels of indirection provides additional flexibility in how code can be written and used. Certain types of operations would be more difficult. In this example, if we need to change a title, we change it in one place and it is reflected everywhere.
+
+### Constants and Pointers
+
+Using `const` with pointers provides different types of protections for different problem sets.
+
+### Pointer to a constant
+
+A pointer can be defined to point to a constant. This means that the pointer cannot be used to modify the value it is referencing.
+
+```c
+int num = 5;
+const int limit = 500;
+int *pi;
+const int *pci;
+
+pi = &num;
+pci = &limit;
+
+printf(" num - Address: %p value: %d\n",&num, num); //num - Address: 100 value: 5
+printf("limit - Address: %p value: %d\n",&limit, limit); //limit - Address: 104 value: 500
+printf(" pi - Address: %p value: %p\n",&pi, pi); //pi - Address: 108 value: 100
+printf(" pci - Address: %p value: %p\n",&pci, pci); //pci - Address: 112 value: 104
+```
+
+<img src="p1_resources/pointers_to_constant.png">
+
+Dereferencing a constant pointer is fine if we are simply reading the integer's value. **We cannot dereference a constant pointer to change what the pointer references, but we can change the pointer**. The pointer value is not constant. The pointer can be changed to reference another constant integer or a simple integer.
+
+The declaration of `pci` as a pointer to a constant integer means:
+* `pci` can be assigned to point to different constant integers
+* `pci` can be assigned to point to different nonconstant integers
+* `pci` can be dereferenced for reading purposes
+* `pci` cannot be dereferenced to change what it points to
+
+### Constant pointers to nonconstants
+
+We can also declare a constant pointer to a nonconstant, this means that while the pointer cannot be changed, the data pointed to it can be modified.
+
+```c
+int num;
+int age;
+int *const cpi = &num;
+
+*cpi = 25; //legal
+cpi = &age; //not legal, will generate an error
+```
+
+With this declaration:
+* `cpi` must be initialized to a nonconstant variable
+* `cpi` cannot be modified
+* the data pointed to by `cpi` can be modified
+
+
+### Constant pointers to constants
