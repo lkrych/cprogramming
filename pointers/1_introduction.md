@@ -2,6 +2,7 @@
 
 ## Table of Contents
 
+* [TLDR](#tldr)
 * [Introduction](#introduction)
 * [Pointers and Memory](#c-and-memory)
     * [C and Memory](#c-and-memory)
@@ -13,7 +14,11 @@
     * [Dereferencing a Pointer using the Indirection Operator: *](#dereferencing-a-pointer-using-the-indirection-operator)
     * [The concept of NULL](#the-concept-of-null)
     * [Pointer to void](#pointer-to-void)
-* [Pointer Size and Types](#)
+* [Pointer Size and Types](#pointer-size-and-types)
+    * [Pointer-related types](#pre-defined-pointer-related-types)
+
+## TLDR
+
 ## Introduction
 
 Please remember this one thing:
@@ -456,3 +461,5 @@ With this declaration:
 
 
 ### Constant pointers to constants
+
+A constant pointer to a constant is an infrequently used pointer type. The pointer cannot be changed and the data it points to cannot be changed through the pointer.
