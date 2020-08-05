@@ -13,6 +13,30 @@
 
 ## TLDR
 
+The basic steps for dynamic memory allocation in C are:
+1. Use a `malloc` type function to allocate memory.
+2. Use the memory.
+3. Deallocate the memory using the `free` function.
+
+When memory is allocated, additional information is stored as part of a data structure maintained by the heap manager.
+
+```c
+int *pi = (int*) malloc(sizeof(int));
+```
+
+Some developers consider **explicit casts** to be a good practice because they document the intention of the `malloc` function
+
+
+```c
+int *pi = (int*) malloc(sizeof(int));
+*pi = 5;
+//...
+free(pi);
+pi = NULL; //designate the pointer as invalid
+```
+
+Some programmers will **explicitly assign NULL to a pointer to designate the pointer as invalid**. Subsequent use of such a pointer will result in a runtime exception.
+
 ## Introduction
 
 Much of the **power of pointers stems from their ability to track dynamically allocated memory**.
@@ -56,7 +80,7 @@ for(int i=0; i<8; i++) {
 
 Notice we only allocate five characters plus the byte for the NUL termination character. The for loop writes extra memory and corrupts the data structure used for heap management.
 
-<img src="2_resources/extra_memory.md">
+<img src="2_resources/extra_memory.png">
 
 ### Memory Leaks
 
@@ -166,3 +190,5 @@ free(p1);
 So how should we deal with dangling pointers?
 
 1. Setting a pointer to NULL after freeing it. Its subsequent use will terminate the application.
+2. Writing special functions to replace the free function.
+3. Use third-party tools to detect dangling pointers
