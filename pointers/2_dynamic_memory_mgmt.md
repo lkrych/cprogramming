@@ -5,6 +5,11 @@
 * [Introduction](#introduction)
 * [Dynamic Memory Management](#dynamic-memory-management)
     * [Memory Leaks](#memory-leaks)
+    * [Hidden Memory Leaks](#hidden-memory-leaks)
+* [Dynamic Memory Allocation Functions](#dynamic-memory-allocation-functions)
+    * [Using free](#using-the-free-function)
+* [The Heap and System Memory](#the-heap-and-system-memory)
+
 
 ## TLDR
 
@@ -105,4 +110,59 @@ So what's with the cast before each of the malloc calls in this section?
 int *pi = (int*) malloc(sizeof(int));
 ```
 
-Before the pointer to void was introduced to C, explicit casts were required with malloc. Some developers consider explicit casts to be a good practice they document the intention of the `malloc` function, and they make the code compatible with C++. 
+Before the pointer to void was introduced to C, explicit casts were required with malloc. Some developers consider explicit casts to be a good practice they document the intention of the `malloc` function, and they make the code compatible with C++.
+
+### Using the free function
+
+The programmer is able to return memory allocated by the `malloc` type functions using the free function. The memory is returned to the heap. 
+
+```c
+int *pi = (int*) malloc(sizeof(int));
+*pi = 5;
+//...
+free(pi);
+```
+
+<img src="2_resources/release_memory.png">
+
+The dashed box at address 500 indicates the memory has been freed but still may contain its value. The variable pi still contains the address 500, this is called a **dangling pointer**.
+
+Pointers can cause problems even after they have been freed. If we try to dereference a freed pointer, its [behavior is undefined](1_introduction.md#c-behaviors). As a result, some programmers will **explicitly assign NULL to a pointer to designate the pointer as invalid**. Subsequent use of such a pointer will result in a runtime exception.
+
+```c
+int *pi = (int*) malloc(sizeof(int));
+*pi = 5;
+//...
+free(pi);
+pi = NULL; //designate the pointer as invalid
+```
+
+### The Heap and System Memory
+
+The heap typically uses OS functions to manage its memory. The heap's size may be fixed when the program is created, or it may be allowed to grow. However, **the heap manager does not necessarily return memory to the OS when the free function is called**. The deallocated memory is simply made available for subsequent use of the application. Thus when a program allocates and then frees up memory, the deallocation of memory is not normally reflected in the application's memory footprint as seen from the OS perspective.
+
+### Freeing memory at program termination
+
+The OS is responsible for maintaining the resources of an application, including memory. When an application terminates, it is the OS's responsibility to reallocate this memory for other applications.
+
+The state of the memory, corrupted, uncorrupted doesn't matter. The OS will just give it to someone else. So while it is good form to free up memory, sometimes it is painful and programmer's don't do it because they are lazy, especially if the program isn't long running.
+
+### Dangling Pointers
+
+```c
+int *p1 = (int*) malloc(sizeof(int));
+*p1 = 5;
+//...
+int *p2;
+p2 = p1;
+//...
+free(p1);
+//...
+*p2 = 10; //dangling pointer
+```
+
+<img src="2_resources/dangling_pointer.png">
+
+So how should we deal with dangling pointers?
+
+1. Setting a pointer to NULL after freeing it. Its subsequent use will terminate the application.
