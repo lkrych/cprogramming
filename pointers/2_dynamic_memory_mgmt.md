@@ -54,3 +54,55 @@ Notice we only allocate five characters plus the byte for the NUL termination ch
 <img src="2_resources/extra_memory.md">
 
 ### Memory Leaks
+
+Memory leaks occur when allocated memory is not freed. This can happen when:
+
+* The memory's address is lost
+* The free function is never invoked
+
+The big problem with memory leaks is that the memory cannot be reclaimed and used later. If memory is repeatedly allocated and then lost, then the program may terminate when more memory is needed but malloc cannot allocate it.
+
+An example of losing the address is below. The address of the first allocation of memory is lost when `pi` is allocated memory a second time.
+
+```c
+int *pi = (int*) malloc(sizeof(int));
+*pi = 5;
+//...
+pi = (int*) malloc(sizeof(int));
+```
+
+<img src="2_resources/losing_an_address.png">
+
+Here's a more subtle one. This code allocates memory for a string, initializes it, and then displays the string character by character. At the end, name is left pointing to the string's NUL termination character and the allocated memory's starting address has been lost.
+
+```c
+char *name = (char*) malloc(strlen("Susan") + 1);
+strcpy(name, "Susan);
+while(*name != 0) {
+    printf("%c", *name);
+    name++;
+}
+```
+
+<img src="2_resources/losing_an_address2.png">
+
+### Hidden Memory Leaks
+
+A hidden memory leak **occurs when an object is kept in the heap even though the object is no longer needed**. Memory leaks can also occur when **freeing structures created using the struct** keyword. If the structure contains pointers to dynamically allocated memory, then these pointers also need to be freed.
+
+## Dynamic Memory Allocation Functions
+
+There are four dynamic memory allocation functions you should now.
+
+1. `malloc` - allocates memory from the heap.
+2. `realloc` - reallocates memory to a larger or smaller amount based on a perviously allocated block of memory.
+3. `calloc` - allocates and zeros out memory from the heap.
+4. `free` - returns a block of memory to the heap. 
+
+So what's with the cast before each of the malloc calls in this section?
+
+```c
+int *pi = (int*) malloc(sizeof(int));
+```
+
+Before the pointer to void was introduced to C, explicit casts were required with malloc. Some developers consider explicit casts to be a good practice they document the intention of the `malloc` function, and they make the code compatible with C++. 
