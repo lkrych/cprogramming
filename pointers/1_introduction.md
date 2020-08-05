@@ -16,8 +16,31 @@
     * [Pointer to void](#pointer-to-void)
 * [Pointer Size and Types](#pointer-size-and-types)
     * [Pointer-related types](#pre-defined-pointer-related-types)
+* [Common uses of Pointers](#common-uses-of-pointers)
+    * [Indirection](#multiple-levels-of-indirection)
+    * [Constants and Pointers](#constants-and-pointers)
 
-## TLDR
+## TLDR 
+
+A **pointer** is a **variable** that **stores the address of a memory location.**
+
+Most **pointers are used to manipulate data in memory**.
+
+* The address of operator, `&`, will return its operand's address.
+
+* The **indirection operator**, `*`, **returns the value pointed to by a pointer variable**. This is frequently referred to as **dereferencing** a pointer.
+
+* When **NULL is assigned to a pointer**, it means the **pointer does not point to anything**.
+
+* A **pointer to void** is a general-purpose pointer **used to hold references to any data type**.
+
+Four predefined types are frequently used when working with pointers.
+
+1. `size_t` - Created to provide a safe type for sizes. 
+2. `ptrdiff_t` - Created to handle pointer arithmetic
+3. `intptr_t\uintptr_t` -  Used for storing pointer addresses.
+
+
 
 ## Introduction
 
@@ -29,7 +52,7 @@ The key to understanding pointers is to **understand how memory is managed** in 
 
 Most **pointers are used to manipulate data in memory**. A pointer variable contains the address in memory of another variable, object, or function.
 
-A pointer is normally declared to be of a specific type depending on what it points to, however **there is nothing inherent in a pointer that indicates what type of data the pointer is referencing**. A pointer only contains an address
+A pointer is normally declared to be of a specific type depending on what it points to, however **there is nothing inherent in a pointer that indicates what type of data the pointer is referencing**. A pointer only contains an address.
 
 ### C and Memory
 
@@ -155,7 +178,7 @@ To further complicate displaying addresses, the pointer addresses returned are n
 
 ### Dereferencing a Pointer using the Indirection Operator (*)
 
-The **indirection operator**, `*`, **returns the value pointed to by a pointer valuable**. This is frequently referred to as **dereferencing** a pointer. 
+The **indirection operator**, `*`, **returns the value pointed to by a pointer variable**. This is frequently referred to as **dereferencing** a pointer. 
 
 ```c
 int num = 5;
@@ -431,7 +454,7 @@ printf(" pi - Address: %p value: %p\n",&pi, pi); //pi - Address: 108 value: 100
 printf(" pci - Address: %p value: %p\n",&pci, pci); //pci - Address: 112 value: 104
 ```
 
-<img src="p1_resources/pointers_to_constant.png">
+<img src="1_resources/pointers_to_constant.png">
 
 Dereferencing a constant pointer is fine if we are simply reading the integer's value. **We cannot dereference a constant pointer to change what the pointer references, but we can change the pointer**. The pointer value is not constant. The pointer can be changed to reference another constant integer or a simple integer.
 
