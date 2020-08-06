@@ -40,3 +40,34 @@ When memory is **dynamically allocated**, it **comes from the heap**, which tend
 <img src="3_resources/stack_and_heap.png">
 
 ### Organization of a stack frame
+
+A stack frame consists of several elements:
+
+* `Return Address` - the address in the program where the function is to return upon completion.
+* `Storage for local data` - Memory allocated for local variables.
+* `Storage for parameters` - Memory allocated for the function's parameters.
+* `Stack and base pointers` - Pointers used by the runtime system to manage the stack.
+
+The **stack pointer points to the top of the stack**. A **stack base pointer** (frame pointer) assists in accessing the stack frame's elements by pointing to an address within the stack frame. **Neither of these pointers are C pointers!** They are addresses used by the runtime to manage the program stack.
+
+When the stack frame is created, the parameters are pushed onto the frame in the opposite order of their declarations, typically, the return address for the function call is next, followed by local variables. Let's look at an example.
+
+```c
+float average(int *arr, int size) {
+    int sum;
+    printf("arr: %p\n", &arr);
+    printf("size: %p\n", &size);
+    printf("sum: %p\n", &sum);
+
+    for(int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    return (sum * 1.0f) / size;
+}
+```
+
+<img src="3_resources/stack_frame.png">
+
+The variable `i` used in the `for` statement is not included as part of the stack frame because C treats block statements as "mini" functions and will push and pop them as appropriate.
+
+While the precise addresses can vary, the order will not. This is important because it helps to explain how memory is allocated and establishes the relative order of the parameters and variables.
