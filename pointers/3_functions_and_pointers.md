@@ -107,3 +107,30 @@ int main() {
 <img src="3_resources/swapping_with_pointers.png">
 
 ### Passing Data by Value
+
+If we do not pass the arguments by pointers, then the swap operation will not occur. In the following function, the two integers are passed by value.
+
+```c
+void swap(int num1, int num2) {
+    int tmp;
+    tmp = num1;
+    num1 = num2;
+    num2 = tmp;
+}
+
+int main() {
+    int n1 = 5;
+    int n2 = 10;
+    swap(n1, n2);
+    return 0;
+}
+
+```
+
+<img src="3_resources/pass_by_value.png">
+
+Only a copy of the arguments are passed to the swap function, so even though they switch place in the swap function, it will not be reflected in main.
+
+### Passing a Pointer to a Constant
+
+Passing a pointer to a constant is a common technique in C. **It is efficient**, as we are only passing the address of the data and can **avoid copying large amounts of memory**. However, with a simple pointer, the data can be modified. When **we want the data to be immutable**, passing a pointer to a constant is the answer. 
