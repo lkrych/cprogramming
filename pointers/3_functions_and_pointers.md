@@ -2,6 +2,10 @@
 
 ## Table of Contents
 
+* [Introduction]()
+* [Program Stack and Heap]()
+    * [ Organization of Stack Frame]()
+* [Passing and Returning by Pointer]()
 
 ### Introduction
 
@@ -71,3 +75,35 @@ float average(int *arr, int size) {
 The variable `i` used in the `for` statement is not included as part of the stack frame because C treats block statements as "mini" functions and will push and pop them as appropriate.
 
 While the precise addresses can vary, the order will not. This is important because it helps to explain how memory is allocated and establishes the relative order of the parameters and variables.
+
+## Passing and Returning by Pointer
+
+**Passing by pointers allows the referenced object to be accessible in multiple functions** without making the object global. This means that only those function that need to access the object will get access ot the object and that it doesn't have to be duplicated.
+
+If the data needs to be modified in a function, it needs to be passed by pointer. We can pass data by pointer and prohibit it from being modified by passing it as a pointer to a constant.
+
+Parameters, including pointers, are **passed by value**. That means **a copy of the argument is passed to the function**. Passing a pointer to an argument can be efficient when dealing with large data structures.
+
+### Passing Data Using a Pointer 
+
+One of the primary reasons for passing data using a pointer is to **allow the function to modify the data**. Let's look at some code that will interchange the values referenced by the parameters of the function.
+
+```c
+void swapWithPointers(int* pnum1, int* pnum2) {
+    int tmp;
+    tmp = *pnum1;
+    *pnum1 = *pnum2;
+    *pnum2 = tmp;
+}
+
+int main() {
+    int n1 = 5;
+    int n2 = 10;
+    swapWithPointers(&n1, &n2);
+    return 0;
+}
+```
+
+<img src="3_resources/swapping_with_pointers.png">
+
+### Passing Data by Value
