@@ -133,4 +133,87 @@ Only a copy of the arguments are passed to the swap function, so even though the
 
 ### Passing a Pointer to a Constant
 
-Passing a pointer to a constant is a common technique in C. **It is efficient**, as we are only passing the address of the data and can **avoid copying large amounts of memory**. However, with a simple pointer, the data can be modified. When **we want the data to be immutable**, passing a pointer to a constant is the answer. 
+Passing a pointer to a constant is a common technique in C. **It is efficient**, as we are only passing the address of the data and can **avoid copying large amounts of memory**. However, with a simple pointer, the data can be modified. When **we want the data to be immutable**, passing a pointer to a constant is the answer. The compiler will complain if you try to modify the constant.
+
+```c
+void passingAddressOfConstants(const int* num1, int* num2) {
+    *num2 = *num1;
+}
+
+int main(){
+    const int limit = 100;
+    int result = 5;
+    passingAddressOfConstants(&limit, &result);
+    return 0;
+}
+
+```
+
+### Returning a pointer
+
+Returning a pointer is easy, we declare the return type to be a pointer to the appropriate data type. If we need to return an object from a function, the following techniques are used:
+1. Allocate memory within the function using `malloc` and return its address. The caller is responsible for deallocating the returned memory.
+2. Pass an object where it is modified, this makes the allocation and deallocation of the object's memory the caller's responsibility.
+
+### Pointers to local data
+
+Returning pointers to local data is an easy mistake to make if the programmer doesn't know how the function stack works. Let's look at a silly example where someone writes a function that doesn't work.
+
+```c
+int* allocateArray(int size, int value) {
+    int arr[size];
+    for(int i=0; i<size; i++) {
+        arr[i] = value;
+    }
+    return arr;
+}
+```
+
+This function won't work because the address of the array returned is no longer valid once the function returns. Why? Because the function's stack frame is popped off the stack.
+
+### Passing Null Pointers
+
+Let's look at an example where we do the array allocation in the calling function.
+
+```c
+int* allocateArray(int *arr, int size, int value) {
+    if(arr != NULL) {
+        for( int i=0; i<size; i++) {
+            arr[i] = value;
+        }
+    }
+    return arr;
+}
+
+int main() {
+    int* vector = (int*)malloc(5 * sizeof(int));
+    allocateArray(vector, 5, 45);
+}
+```
+
+**When a pointer is passed to a function, it is good practice to check if it is not null.**
+
+### Passing a Pointer to a Pointer
+
+**When a pointer is passed to a function, it is passed by value**. If we want to modify the original pointer and not the copy of the pointer, **we need to pass it as a pointer to a pointer**.
+
+Let's look at a function that will return a pointer to an allocated array.
+
+```c
+void allocateArray(int** arr, int size, int value){
+    *arr = (int*)malloc(size * sizeof(int));
+    if(*arr != NULL) {
+        for(int i=0; i<size; i++){
+            *(*arr+i) = value;
+        }
+    }
+}
+
+int main() {
+    int *vector = NULL;
+    allocateArray(&vector, 5, 45);
+}
+
+```
+
+<img src="3_resources/pointer_to_pointer.png">
