@@ -226,4 +226,32 @@ One concern with the use of function pointers is that it could create a slower p
 
 Branch prediction is a technique used by a processor to guess which execution sequence will be executed. Pipelining is a hardware technology that is used to improve processor performance by overlapping instruction execution.
 
-### Declaring Function Pointera
+### Declaring Function Pointers
+
+Function pointer declarations look a lot like a prototype.
+
+<img src="3_resources/function_pointer_decl.png">
+
+```c
+int (*f1)(double); //passed a double and returns an int
+void (*f2)(char*); // passed a pointer to a char and returns void
+double* (*f3)(int, int) //passed two integers and returns a pointer to a double
+```
+
+One suggested naming convention for function pointers is to always begin their name with the prefix `fptr`.
+
+So how do you use function pointers? Let's look at an example where a function is passed an integer and returns an integer.We also define a square function that squares and integer and returns the square.
+
+```c
+int (*fptr1)(int);
+
+int square(int num){
+    return num*num;
+}
+
+int main(){
+    int n = 5;
+    fptr1 = square;
+    printf("%d squared is %d\n", n, fptr1(n));
+}
+```
