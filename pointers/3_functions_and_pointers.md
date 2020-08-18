@@ -217,3 +217,13 @@ int main() {
 ```
 
 <img src="3_resources/pointer_to_pointer.png">
+
+## Function Pointers
+
+A **function pointer** is a **pointer that holds the address of a function**. Function pointers provide programmers with a way of executing functions in an order that may not be known at compile time and without using conditional statements.
+
+One concern with the use of function pointers is that it could create a slower program because the processor may not be able to use branch prediction in conjunction with pipelining.
+
+Branch prediction is a technique used by a processor to guess which execution sequence will be executed. Pipelining is a hardware technology that is used to improve processor performance by overlapping instruction execution.
+
+### Declaring Function Pointera
