@@ -243,7 +243,7 @@ One suggested naming convention for function pointers is to always begin their n
 So how do you use function pointers? Let's look at an example where a function is passed an integer and returns an integer.We also define a square function that squares and integer and returns the square.
 
 ```c
-int (*fptr1)(int);
+typedef int (*fptr1)(int);
 
 int square(int num){
     return num*num;
@@ -255,3 +255,33 @@ int main(){
     printf("%d squared is %d\n", n, fptr1(n));
 }
 ```
+
+Using `typedef` makes the function pointer declaration easier to read. It says simply that `fptr1` is a type of function that returns an int.
+
+### Passing Function Pointers
+
+Function pointer declarations can be passed as a parameter to a function.
+
+```c
+int add(int num1, int num2) {
+    return num1 + num2;
+}
+
+int subtract(int num1, int num2) {
+    return num1 - num2;
+}
+
+typedef int (*fptrOperation)(int, int);
+
+int compute(fptrOperation operation, int num1, int num2) {
+    return operation(num1, num2);
+}
+
+int main(){
+    printf("%d\n", compute(add, 5, 6));
+}
+```
+
+The output will be an 11. The add function's address was passed to the compute function. This address was then used to invoke the corresponding operation.
+
+### Returning Function Pointers
