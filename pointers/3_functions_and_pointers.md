@@ -2,10 +2,35 @@
 
 ## Table of Contents
 
-* [Introduction]()
-* [Program Stack and Heap]()
-    * [ Organization of Stack Frame]()
-* [Passing and Returning by Pointer]()
+* [Introduction](#introduction)
+* [Program Stack and Heap](#program-stack-and-heap)
+    * [Program Stack](#program-stack)
+    * [ Organization of Stack Frame](#organization-of-a-stack-frame)
+* [Passing and Returning by Pointer](#passing-and-returning-by-pointer)
+    * [Passing Data Using a Pointer](#passing-data-using-a-pointer)
+    * [Passing Data By Value](#passing-data-by-value)
+    * [Passing a Pointer to a Constant](#passing-a-pointer-to-a-constant)
+    * [Returning a Pointer](#returning-a-pointer)
+    * [Pointers to Local Data](#pointers-to-local-data)
+    * [Passing Null Pointers](#passing-null-pointers)
+    * [Passing a Pointer to a Pointer](#passing-a-pointer-to-a-pointer)
+* [Function Pointers](#function-pointers)
+    * [Declaring a Function Pointer](#declaring-a-function-pointer)
+    * [Using a Function Pointer](#using-a-function-pointer)
+
+### TLDR
+
+Pointers to functions can dynamically control a program's execution flow.
+
+Passing a pointer to a function allows an object to be referenced by multiple functions without making it global.
+
+We can pass data by pointer and prohibit it from being modified by passing it as a pointer to a constant.
+
+Parameters, including pointers, are **passed by value**. That means **a copy of the argument is passed to the function**. Passing a pointer to an argument can be efficient when dealing with large data structures.
+
+Function pointer declarations look a lot like a prototype.
+
+<img src="3_resources/function_pointer_decl.png">
 
 ### Introduction
 
@@ -14,6 +39,8 @@ Pointers allow data to be passed and modified by a function. Complex data can al
 To understand functions and their use with pointers, we need to talk about the **program stack**. The program stack is used by most modern block-structured languages to support the execution of functions. When **a function is invoked, a stack frame is created and pushed onto the program stack**.  When the function returns, its stack frame is popped off.
 
 ## Program Stack and Heap
+
+### Program Stack
 
 The **program stack** is **an area of memory** that **supports the execution of functions** and is normally **shared with the heap** (they share the same region of memory). The program stack tends to occupy the lower region, while the heap uses the upper part (and grows downward).
 
@@ -78,7 +105,7 @@ While the precise addresses can vary, the order will not. This is important beca
 
 ## Passing and Returning by Pointer
 
-**Passing by pointers allows the referenced object to be accessible in multiple functions** without making the object global. This means that only those function that need to access the object will get access ot the object and that it doesn't have to be duplicated.
+**Passing by pointers allows the referenced object to be accessible in multiple functions** without making the object global. This means that only those function that need to access the object will get access to the object and that it doesn't have to be duplicated.
 
 If the data needs to be modified in a function, it needs to be passed by pointer. We can pass data by pointer and prohibit it from being modified by passing it as a pointer to a constant.
 
