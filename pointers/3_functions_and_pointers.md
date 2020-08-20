@@ -285,3 +285,69 @@ int main(){
 The output will be an 11. The add function's address was passed to the compute function. This address was then used to invoke the corresponding operation.
 
 ### Returning Function Pointers
+
+Returning a function pointer requires declaring the function's return type as a function pointer. We will use a select function to return a function pointer to an operation based on a character input. It will return a pointer to either the add function or the subtract function.
+
+```c
+int add(int num1, int num2) {
+    return num1 + num2;
+}
+
+int subtract(int num1, int num2) {
+    return num1 - num2;
+}
+
+typedef int (*fptrOperation)(int, int);
+
+fptrOperation select(char opcode) {
+    switch(opcode) {
+        case '+': return add;
+        case '-': return subtract;
+    }
+}
+
+int evaluate(char opcode, int num1, int num2) {
+    fptrOperation operation = select(opcode);
+    return operation(num1, num2);
+}
+
+int main(){
+    printf("%d\n", evaluate('+', 5, 6));
+}
+```
+
+### Using an Array of Function Pointers
+
+Imagine you want to expand the `select` code in the example above. A simple way to do this would be to use an array to hold the corresponding function pointers.
+
+The intent of this array is to allow a character index to select a corresponding function to execute.
+
+```c
+int add(int num1, int num2) {
+    return num1 + num2;
+}
+
+int subtract(int num1, int num2) {
+    return num1 - num2;
+}
+
+typedef int (*fptrOperation)(int, int);
+
+typedef int (*operation)(int, int);
+operation operations[128] = {NULL}; //init array
+
+void initializeOperationsArray() {
+    operations['+'] = add;
+    operations['-'] = subtract;
+}
+
+int evaluate(char opcode, int num1, int num2) {
+    fptrOperation operation;
+    operation = operations[opcode];
+    return operation(num1, num2);
+}
+
+int main(){
+    initializeOperationsArray();
+    printf("%d\n", evaluate('+', 5, 6));
+}
