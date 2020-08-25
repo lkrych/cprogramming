@@ -42,3 +42,50 @@ int matrix[2][3] = {{1,2,3}, {4,5,6}};
 The image below illustrates how memory is allocated for the array. The diagram on the left show show memory is mapped. The diagram on the right shows how it can be viewed conceptually.
 
 <img src="4_resources/two_dimension.png">
+
+A two-dimensional array is treated as an array of arrays. This is, when we access the array using only one subscript, we get a pointer to the corresponding row. 
+
+```c
+int matrix[2][3] = {{1,2,3}, {4,5,6}};
+
+for( int i = 0; i < 2; i++) {
+    printf("&matrix[%d]: %p sizzeof(matrix[%d]: %d\n", i, &matrix[i], i, sizeof(matrix[i]);
+}
+// &matrix[0]: 100 sizeof(matrix[0]): 12
+// &matrix[1]: 112 sizeof(matrix[1]): 12
+```
+
+The size is twelve because each row has elements of four bytes each.
+
+## Multidimensional Arrays
+
+As with two-dimensional arrays, multiple sets of brackets define the array's type and size. Let's create a three dimensional array with three rows, two columns and a rank (term often used for the third dimension) of four.
+
+
+```c
+int arr3d[3][2][4] = {
+    {{1, 2, 3, 4}, {5, 6, 7, 8}},
+    {{9, 10, 11, 12}, {13, 14, 15, 16}}, {{17, 18, 19, 20}, {21, 22, 23, 24}}
+};
+```
+
+<img src="4_resources/three_dimension.png">
+
+## Pointer Notation and Arrays
+
+When an array name is used by itself, the array's address is returned. This can be assigned to a pointer.
+
+```c
+int vector[5] = {1, 2, 3, 4, 5};
+int *pv = vector;
+```
+
+The variable `pv` is a **pointer to the first element of the array and not the array itself**. When we first assigned a value to `pv`, we assigned the address of the array's first element.
+
+The expression `&vector` is sometimes used to obtain the address of an array. It differs from other notations in that it returns a pointer to the entire array. The other two approaches, `vector/&vector[0]` yield a pointer to an integer. 
+
+We can also use array subscripts with pointers. Effectively the notation: `pv[i] = *(pv + i);`
+
+The pointer `pv` contains the address of a block of memory. The bracket notation will take the address contained in pv and add the value contained in the index `i` using pointer arithmetic.
+
+## Differences Between Arrays and Pointers
