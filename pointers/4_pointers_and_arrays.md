@@ -157,3 +157,5 @@ while(1) {
 *currentPosition = '\0';
 return buffer;
 ```
+
+The buffer is created with a size of `sizeIncrement`. If the `malloc` function is unable to allocate memory, the first if statement will force the function to return NULL. An infinite loop is entered where the characters are processed one at atime. When the loop exits a NUL is added to terminate the string and the buffers address is returned.
