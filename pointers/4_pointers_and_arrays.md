@@ -159,3 +159,9 @@ return buffer;
 ```
 
 The buffer is created with a size of `sizeIncrement`. If the `malloc` function is unable to allocate memory, the first if statement will force the function to return NULL. An infinite loop is entered where the characters are processed one at atime. When the loop exits a NUL is added to terminate the string and the buffers address is returned.
+
+Within the while loop, a character is read in. If we have exceeded the buffer's size, the `realloc` function creates a new block of memory. This block is `sizeIncrement` bytes larger than the old one. `currentPosition` is adjusted to point to the right position within the new buffer and we assign the variable buffer to point to the newly allocated buffer. The `realloc` function won't keep your existing memory in place, so you have to use the pointer it returns to figure out where your new memory block is.
+
+The variable `newBuffer` holds the allocated memory's address. We need a separate variable, not `buffer` in case `realloc` was not able to allocate memory. 
+
+We did not free `buffer` if `realloc` was successful because `realloc` will copy the original buffer to the new buffer and free up the old buffer. 
